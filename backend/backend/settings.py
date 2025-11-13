@@ -68,10 +68,10 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'student_portal',
-        'USER': 'portal_user',        # Use portal_user instead
-        'PASSWORD': 'portal123',      # With its password
-        'HOST': 'localhost',
+        'NAME': 'student_portal_iuqc',
+        'USER': 'portal_user',
+        'PASSWORD': 'zrYdXfEVdmMobOmdoAWD4xWy4aQGSNvY',
+        'HOST': 'dpg-d4ac9uc9c44c73e70ob0-a.oregon-postgres.render.com',
         'PORT': '5432',
     }
 }
