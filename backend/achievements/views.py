@@ -1,91 +1,82 @@
-from rest_framework import viewsets, permissions, status
-from rest_framework.decorators import action
+from rest_framework import status
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
-from django.db.models import Q
-from .models import Achievement, Notification
-from .serializers import AchievementSerializer, NotificationSerializer
-from .permissions import IsStudentOwnerOrCoordinator, IsCoordinator
+from rest_framework.permissions import AllowAny
+from django.contrib.auth import authenticate, login
+from django.contrib.auth import get_user_model
+from rest_framework_simplejwt.tokens import RefreshToken
 
+User = get_user_model()
 
-class AchievementViewSet(viewsets.ModelViewSet):
-    queryset = Achievement.objects.select_related('student', 'verified_by').all()
-    serializer_class = AchievementSerializer
-
-    def get_permissions(self):
-        if self.action in ['list', 'retrieve']:
-            permission_classes = [permissions.AllowAny]
-        elif self.action in ['verify', 'pending']:
-            permission_classes = [permissions.IsAuthenticated, IsCoordinator]
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def custom_login(request):
+    """Custom login view that returns JWT tokens"""
+    username = request.data.get('username')
+    password = request.data.get('password')
+    
+    user = authenticate(username=username, password=password)
+    
+    if user is not None:
+        if user.is_active:
+            # Generate JWT tokens
+            refresh = RefreshToken.for_user(user)
+            
+            return Response({
+                'success': True,
+                'message': 'Login successful',
+                'user': {
+                    'id': user.id,
+                    'username': user.username,
+                    'email': user.email,
+                    'first_name': user.first_name,
+                    'last_name': user.last_name,
+                    'role': user.role,
+                    'is_staff': user.is_staff,
+                    'is_superuser': user.is_superuser
+                },
+                'tokens': {
+                    'refresh': str(refresh),
+                    'access': str(refresh.access_token),
+                }
+            })
         else:
-            permission_classes = [permissions.IsAuthenticated, IsStudentOwnerOrCoordinator]
-        return [permission() for permission in permission_classes]
+            return Response({
+                'success': False,
+                'error': 'Account is disabled'
+            }, status=status.HTTP_400_BAD_REQUEST)
+    else:
+        return Response({
+            'success': False,
+            'error': 'Invalid credentials'
+        }, status=status.HTTP_400_BAD_REQUEST)
 
-    def get_queryset(self):
-        queryset = Achievement.objects.select_related('student', 'verified_by').all()
-
-        student_id = self.request.query_params.get('student_id', None)
-        if student_id:
-            queryset = queryset.filter(student_id=student_id)
-
-        status_filter = self.request.query_params.get('status', None)
-        if status_filter:
-            queryset = queryset.filter(status=status_filter)
-
-        category = self.request.query_params.get('category', None)
-        if category:
-            queryset = queryset.filter(category=category)
-
-        return queryset
-
-    @action(detail=False, methods=['get'])
-    def my_achievements(self, request):
-        achievements = Achievement.objects.filter(student=request.user)
-        serializer = self.get_serializer(achievements, many=True)
-        return Response(serializer.data)
-
-    @action(detail=False, methods=['get'], permission_classes=[permissions.IsAuthenticated, IsCoordinator])
-    def pending(self, request):
-        pending_achievements = Achievement.objects.filter(status='pending')
-        serializer = self.get_serializer(pending_achievements, many=True)
-        return Response(serializer.data)
-
-    @action(detail=True, methods=['post'], permission_classes=[permissions.IsAuthenticated, IsCoordinator])
-    def verify(self, request, pk=None):
-        achievement = self.get_object()
-        new_status = request.data.get('status')
-        verification_notes = request.data.get('verification_notes', '')
-
-        if new_status not in ['verified', 'rejected']:
-            return Response(
-                {'error': 'Status must be either "verified" or "rejected"'},
-                status=status.HTTP_400_BAD_REQUEST
-            )
-
-        achievement.status = new_status
-        achievement.verified_by = request.user
-        achievement.verification_notes = verification_notes
-        achievement.save()
-
-        serializer = self.get_serializer(achievement)
-        return Response(serializer.data)
-
-
-class NotificationViewSet(viewsets.ReadOnlyModelViewSet):
-    serializer_class = NotificationSerializer
-    permission_classes = [permissions.IsAuthenticated]
-
-    def get_queryset(self):
-        return Notification.objects.filter(user=self.request.user)
-
-    @action(detail=True, methods=['post'])
-    def mark_read(self, request, pk=None):
-        notification = self.get_object()
-        notification.is_read = True
-        notification.save()
-        serializer = self.get_serializer(notification)
-        return Response(serializer.data)
-
-    @action(detail=False, methods=['post'])
-    def mark_all_read(self, request):
-        Notification.objects.filter(user=request.user, is_read=False).update(is_read=True)
-        return Response({'status': 'all notifications marked as read'})
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def create_admin_user(request):
+    """Create an admin user with proper password hashing"""
+    try:
+        # Delete existing admin user if exists
+        User.objects.filter(username='admin').delete()
+        
+        # Create new admin user
+        admin_user = User.objects.create_superuser(
+            username='admin',
+            email='admin@example.com',
+            password='admin123',
+            first_name='Admin',
+            last_name='User',
+            role='admin'
+        )
+        
+        return Response({
+            'success': True,
+            'message': 'Admin user created successfully!',
+            'credentials': {
+                'username': 'admin',
+                'password': 'admin123'
+            }
+        })
+        
+    except Exception as e:
+        return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
