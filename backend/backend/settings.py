@@ -68,11 +68,11 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'student_portal_iuqc',
-        'USER': 'portal_user',
-        'PASSWORD': 'zrYdXfEVdmMobOmdoAWD4xWy4aQGSNvY',
-        'HOST': 'dpg-d4ac9uc9c44c73e70ob0-a.oregon-postgres.render.com',
-        'PORT': '5432',
+        'NAME': os.getenv('DB_NAME', 'student_portal_iuqc'),
+        'USER': os.getenv('DB_USER', 'portal_user'),
+        'PASSWORD': os.getenv('DB_PASSWORD', ''),
+        'HOST': os.getenv('DB_HOST', ''),
+        'PORT': os.getenv('DB_PORT', '5432'),
     }
 }
 
