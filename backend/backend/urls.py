@@ -10,7 +10,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/auth/', include('users.urls')),
     path('api/profiles/', include('profiles.urls')),
-    path('api/achievements/', include('achievements.urls')),
+    path('api/users/', include('users.urls')),  # User authentication URLs
+    path('api/achievements/', include('achievements.urls')),  # Achievements URLs
 ]
 
 if settings.DEBUG:
