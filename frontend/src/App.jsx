@@ -15,31 +15,42 @@ import ProtectedRoute from './components/ProtectedRoute'
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#1976d2',
-      light: '#42a5f5',
-      dark: '#1565c0',
+      main: '#0F2D52',
+      light: '#1a4575',
+      dark: '#081b33',
     },
     secondary: {
-      main: '#dc004e',
+      main: '#D4AF37',
+      light: '#ddc15e',
+      dark: '#b89527',
     },
     background: {
-      default: '#f5f5f5',
+      default: '#f8f9fa',
     },
   },
   typography: {
-    fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+    fontFamily: '"Georgia", "Times New Roman", serif',
     h1: {
       fontWeight: 700,
+      letterSpacing: '0.02em',
     },
     h2: {
-      fontWeight: 600,
+      fontWeight: 700,
+      letterSpacing: '0.02em',
     },
     h3: {
       fontWeight: 600,
+      letterSpacing: '0.01em',
+    },
+    body1: {
+      fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+    },
+    body2: {
+      fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
     },
   },
   shape: {
-    borderRadius: 8,
+    borderRadius: 4,
   },
 })
 

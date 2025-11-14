@@ -10,35 +10,114 @@ const Home = () => {
 
   return (
     <Box>
-      <Paper
+      <Box
         sx={{
-          background: 'linear-gradient(135deg, #1976d2 0%, #1565c0 100%)',
+          position: 'relative',
+          backgroundImage: 'url(https://images.pexels.com/photos/1595391/pexels-photo-1595391.jpeg?auto=compress&cs=tinysrgb&w=1920)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
           color: 'white',
-          py: 8,
+          py: 12,
           px: 3,
           mb: 6,
-          borderRadius: 2,
+          '&::before': {
+            content: '""',
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: 'rgba(15, 45, 82, 0.85)',
+            zIndex: 1,
+          },
         }}
       >
-        <Container maxWidth="md">
-          <Typography variant="h2" align="center" gutterBottom fontWeight={700}>
-            Student Achievement Portal
+        <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 2 }}>
+          <Box sx={{ textAlign: 'center', mb: 3 }}>
+            <Typography
+              variant="h6"
+              sx={{
+                color: '#D4AF37',
+                fontWeight: 600,
+                letterSpacing: '0.1em',
+                textTransform: 'uppercase',
+                mb: 1
+              }}
+            >
+              University Institute of Engineering & Technology
+            </Typography>
+            <Typography
+              variant="body1"
+              sx={{
+                color: 'rgba(255, 255, 255, 0.9)',
+                mb: 4
+              }}
+            >
+              Panjab University, Chandigarh
+            </Typography>
+          </Box>
+
+          <Typography
+            variant="h2"
+            align="center"
+            gutterBottom
+            fontWeight={700}
+            sx={{
+              fontFamily: 'Georgia, serif',
+              fontSize: { xs: '2.5rem', md: '3.5rem' },
+              mb: 3,
+              textShadow: '2px 2px 4px rgba(0,0,0,0.3)',
+            }}
+          >
+            UIET Student Achievement Portal
           </Typography>
-          <Typography variant="h5" align="center" paragraph sx={{ mb: 4, opacity: 0.9 }}>
-            Showcase your accomplishments, track your progress, and celebrate your success
+          <Typography
+            variant="h5"
+            align="center"
+            paragraph
+            sx={{
+              mb: 5,
+              opacity: 0.95,
+              fontWeight: 300,
+              maxWidth: '800px',
+              mx: 'auto',
+              lineHeight: 1.6,
+            }}
+          >
+            Celebrating Student Excellence and Success
+          </Typography>
+          <Typography
+            variant="body1"
+            align="center"
+            paragraph
+            sx={{
+              mb: 5,
+              opacity: 0.9,
+              maxWidth: '700px',
+              mx: 'auto',
+              fontSize: '1.1rem',
+            }}
+          >
+            A comprehensive platform to document, showcase, and verify academic achievements, technical skills, and extracurricular accomplishments of UIET students
           </Typography>
           {!isAuthenticated && (
-            <Box display="flex" justifyContent="center" gap={2}>
+            <Box display="flex" justifyContent="center" gap={3}>
               <Button
                 component={Link}
                 to="/register"
                 variant="contained"
                 size="large"
                 sx={{
-                  backgroundColor: 'white',
-                  color: 'primary.main',
+                  backgroundColor: '#D4AF37',
+                  color: '#0F2D52',
+                  px: 4,
+                  py: 1.5,
+                  fontSize: '1.1rem',
+                  fontWeight: 600,
+                  boxShadow: '0 4px 12px rgba(212, 175, 55, 0.4)',
                   '&:hover': {
-                    backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                    backgroundColor: '#b89527',
+                    boxShadow: '0 6px 16px rgba(212, 175, 55, 0.5)',
                   },
                 }}
               >
@@ -50,11 +129,17 @@ const Home = () => {
                 variant="outlined"
                 size="large"
                 sx={{
-                  borderColor: 'white',
-                  color: 'white',
+                  borderColor: '#D4AF37',
+                  borderWidth: 2,
+                  color: '#D4AF37',
+                  px: 4,
+                  py: 1.5,
+                  fontSize: '1.1rem',
+                  fontWeight: 600,
                   '&:hover': {
-                    borderColor: 'white',
-                    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                    borderColor: '#D4AF37',
+                    borderWidth: 2,
+                    backgroundColor: 'rgba(212, 175, 55, 0.1)',
                   },
                 }}
               >
@@ -63,59 +148,153 @@ const Home = () => {
             </Box>
           )}
         </Container>
-      </Paper>
+      </Box>
 
       <Container maxWidth="lg">
+        <Box sx={{ textAlign: 'center', mb: 6 }}>
+          <Typography variant="h3" gutterBottom fontWeight={700} sx={{ color: '#0F2D52', fontFamily: 'Georgia, serif' }}>
+            Features
+          </Typography>
+          <Box sx={{ width: 80, height: 4, backgroundColor: '#D4AF37', mx: 'auto', mb: 2 }} />
+          <Typography variant="body1" color="text.secondary" sx={{ maxWidth: '600px', mx: 'auto' }}>
+            A comprehensive system designed for UIET students to document and celebrate their academic journey
+          </Typography>
+        </Box>
+
         <Grid container spacing={4}>
           <Grid item xs={12} md={4}>
-            <Card sx={{ height: '100%', transition: 'transform 0.2s', '&:hover': { transform: 'translateY(-4px)' } }}>
-              <CardContent sx={{ textAlign: 'center', py: 4 }}>
-                <EmojiEventsIcon sx={{ fontSize: 60, color: 'primary.main', mb: 2 }} />
-                <Typography variant="h5" gutterBottom fontWeight={600}>
+            <Card
+              sx={{
+                height: '100%',
+                transition: 'all 0.3s',
+                border: '2px solid transparent',
+                '&:hover': {
+                  transform: 'translateY(-8px)',
+                  borderColor: '#D4AF37',
+                  boxShadow: '0 8px 24px rgba(15, 45, 82, 0.15)',
+                }
+              }}
+            >
+              <CardContent sx={{ textAlign: 'center', py: 5 }}>
+                <Box
+                  sx={{
+                    width: 80,
+                    height: 80,
+                    borderRadius: '50%',
+                    backgroundColor: 'rgba(15, 45, 82, 0.1)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    mx: 'auto',
+                    mb: 3,
+                  }}
+                >
+                  <EmojiEventsIcon sx={{ fontSize: 40, color: '#0F2D52' }} />
+                </Box>
+                <Typography variant="h5" gutterBottom fontWeight={600} sx={{ color: '#0F2D52' }}>
                   Track Achievements
                 </Typography>
-                <Typography variant="body1" color="text.secondary">
-                  Document and showcase your academic, technical, and extracurricular achievements in one place
+                <Typography variant="body1" color="text.secondary" sx={{ lineHeight: 1.8 }}>
+                  Document and showcase your academic, technical, and extracurricular achievements in one centralized platform
                 </Typography>
               </CardContent>
             </Card>
           </Grid>
 
           <Grid item xs={12} md={4}>
-            <Card sx={{ height: '100%', transition: 'transform 0.2s', '&:hover': { transform: 'translateY(-4px)' } }}>
-              <CardContent sx={{ textAlign: 'center', py: 4 }}>
-                <VerifiedIcon sx={{ fontSize: 60, color: 'primary.main', mb: 2 }} />
-                <Typography variant="h5" gutterBottom fontWeight={600}>
+            <Card
+              sx={{
+                height: '100%',
+                transition: 'all 0.3s',
+                border: '2px solid transparent',
+                '&:hover': {
+                  transform: 'translateY(-8px)',
+                  borderColor: '#D4AF37',
+                  boxShadow: '0 8px 24px rgba(15, 45, 82, 0.15)',
+                }
+              }}
+            >
+              <CardContent sx={{ textAlign: 'center', py: 5 }}>
+                <Box
+                  sx={{
+                    width: 80,
+                    height: 80,
+                    borderRadius: '50%',
+                    backgroundColor: 'rgba(15, 45, 82, 0.1)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    mx: 'auto',
+                    mb: 3,
+                  }}
+                >
+                  <VerifiedIcon sx={{ fontSize: 40, color: '#0F2D52' }} />
+                </Box>
+                <Typography variant="h5" gutterBottom fontWeight={600} sx={{ color: '#0F2D52' }}>
                   Get Verified
                 </Typography>
-                <Typography variant="body1" color="text.secondary">
-                  Coordinators verify your achievements, adding credibility and recognition to your profile
+                <Typography variant="body1" color="text.secondary" sx={{ lineHeight: 1.8 }}>
+                  Faculty coordinators verify your achievements, adding official credibility and institutional recognition
                 </Typography>
               </CardContent>
             </Card>
           </Grid>
 
           <Grid item xs={12} md={4}>
-            <Card sx={{ height: '100%', transition: 'transform 0.2s', '&:hover': { transform: 'translateY(-4px)' } }}>
-              <CardContent sx={{ textAlign: 'center', py: 4 }}>
-                <SchoolIcon sx={{ fontSize: 60, color: 'primary.main', mb: 2 }} />
-                <Typography variant="h5" gutterBottom fontWeight={600}>
+            <Card
+              sx={{
+                height: '100%',
+                transition: 'all 0.3s',
+                border: '2px solid transparent',
+                '&:hover': {
+                  transform: 'translateY(-8px)',
+                  borderColor: '#D4AF37',
+                  boxShadow: '0 8px 24px rgba(15, 45, 82, 0.15)',
+                }
+              }}
+            >
+              <CardContent sx={{ textAlign: 'center', py: 5 }}>
+                <Box
+                  sx={{
+                    width: 80,
+                    height: 80,
+                    borderRadius: '50%',
+                    backgroundColor: 'rgba(15, 45, 82, 0.1)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    mx: 'auto',
+                    mb: 3,
+                  }}
+                >
+                  <SchoolIcon sx={{ fontSize: 40, color: '#0F2D52' }} />
+                </Box>
+                <Typography variant="h5" gutterBottom fontWeight={600} sx={{ color: '#0F2D52' }}>
                   Public Profiles
                 </Typography>
-                <Typography variant="body1" color="text.secondary">
-                  Share your profile publicly to showcase your journey and accomplishments to the world
+                <Typography variant="body1" color="text.secondary" sx={{ lineHeight: 1.8 }}>
+                  Share your verified profile publicly to showcase your academic journey and accomplishments
                 </Typography>
               </CardContent>
             </Card>
           </Grid>
         </Grid>
 
-        <Box sx={{ mt: 6, textAlign: 'center' }}>
-          <Typography variant="h4" gutterBottom fontWeight={600}>
+        <Box
+          sx={{
+            mt: 8,
+            p: 6,
+            textAlign: 'center',
+            backgroundColor: '#0F2D52',
+            borderRadius: 2,
+            color: 'white',
+          }}
+        >
+          <Typography variant="h3" gutterBottom fontWeight={700} sx={{ fontFamily: 'Georgia, serif' }}>
             Ready to get started?
           </Typography>
-          <Typography variant="body1" color="text.secondary" paragraph>
-            Join hundreds of students showcasing their achievements
+          <Typography variant="h6" paragraph sx={{ opacity: 0.9, fontWeight: 300, mb: 4 }}>
+            Join the UIET community in documenting and celebrating student excellence
           </Typography>
           {!isAuthenticated && (
             <Button
@@ -123,7 +302,20 @@ const Home = () => {
               to="/register"
               variant="contained"
               size="large"
-              sx={{ mt: 2 }}
+              sx={{
+                mt: 2,
+                backgroundColor: '#D4AF37',
+                color: '#0F2D52',
+                px: 5,
+                py: 1.5,
+                fontSize: '1.1rem',
+                fontWeight: 600,
+                boxShadow: '0 4px 12px rgba(212, 175, 55, 0.4)',
+                '&:hover': {
+                  backgroundColor: '#b89527',
+                  boxShadow: '0 6px 16px rgba(212, 175, 55, 0.5)',
+                },
+              }}
             >
               Create Your Profile
             </Button>

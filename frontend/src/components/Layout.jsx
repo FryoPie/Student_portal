@@ -39,8 +39,15 @@ const Layout = ({ children }) => {
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-      <AppBar position="static" elevation={2}>
-        <Toolbar>
+      <AppBar position="static" elevation={3} sx={{ backgroundColor: '#0F2D52' }}>
+        <Toolbar sx={{ justifyContent: 'space-between', py: 1 }}>
+          <Box
+            component="img"
+            src="https://images.pexels.com/photos/267885/pexels-photo-267885.jpeg?auto=compress&cs=tinysrgb&w=120"
+            alt="Panjab University Logo"
+            sx={{ height: 60, mr: 2 }}
+          />
+
           <Typography
             variant="h6"
             component={Link}
@@ -50,10 +57,19 @@ const Layout = ({ children }) => {
               textDecoration: 'none',
               color: 'inherit',
               fontWeight: 700,
+              textAlign: 'center',
+              fontFamily: 'Georgia, serif',
             }}
           >
             Student Achievement Portal
           </Typography>
+
+          <Box
+            component="img"
+            src="https://images.pexels.com/photos/159775/library-la-trobe-study-students-159775.jpeg?auto=compress&cs=tinysrgb&w=120"
+            alt="UIET Logo"
+            sx={{ height: 60, mr: 2 }}
+          />
 
           {isAuthenticated ? (
             <>
@@ -110,12 +126,19 @@ const Layout = ({ children }) => {
           py: 3,
           px: 2,
           mt: 'auto',
-          backgroundColor: (theme) => theme.palette.grey[200],
+          backgroundColor: '#0F2D52',
+          color: 'white',
         }}
       >
-        <Container maxWidth="sm">
-          <Typography variant="body2" color="text.secondary" align="center">
-            © 2024 Student Achievement Portal. All rights reserved.
+        <Container maxWidth="lg">
+          <Typography variant="body2" align="center" sx={{ mb: 1 }}>
+            University Institute of Engineering & Technology
+          </Typography>
+          <Typography variant="body2" align="center" sx={{ fontWeight: 300 }}>
+            Panjab University, Chandigarh
+          </Typography>
+          <Typography variant="caption" align="center" display="block" sx={{ mt: 2, opacity: 0.8 }}>
+            © 2024 UIET Student Achievement Portal. All rights reserved.
           </Typography>
         </Container>
       </Box>
