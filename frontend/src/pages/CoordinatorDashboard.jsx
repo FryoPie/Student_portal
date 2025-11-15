@@ -180,6 +180,7 @@ const CoordinatorDashboard = () => {
                             startIcon={<AttachFileIcon />}
                             href={achievement.proof_document}
                             target="_blank"
+                            rel="noopener noreferrer"
                           >
                             View Proof Document
                           </Button>

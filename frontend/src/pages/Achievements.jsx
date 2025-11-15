@@ -182,16 +182,15 @@ const Achievements = () => {
 
   const getCategoryColor = (category) => {
     const colors = {
-      academic: 'primary',
-      sports: 'success',
-      cultural: 'secondary',
-      technical: 'info',
-      leadership: 'warning',
-      community: 'success',
-      research: 'primary',
-      other: 'default',
+      academic: 'primary',   // Blue
+      sports: 'info',        // Light Blue
+      cultural: 'secondary', // Purple
+      technical: 'secondary',// Purple (instead of info)
+      leadership: 'primary', // Blue
+      community: 'info',     // Light Blue (instead of success)
+      research: 'primary',   // Blue
+      other: 'default',      // Grey
     }
-    return colors[category] || 'default'
   }
 
   if (loading) {
@@ -267,12 +266,14 @@ const Achievements = () => {
                     <Chip
                       label={achievement.status}
                       color={getStatusColor(achievement.status)}
+                      variant="filled"
                       size="small"
                       sx={{ mr: 1 }}
                     />
                     <Chip
                       label={achievement.category}
                       color={getCategoryColor(achievement.category)}
+                      variant="outlined"
                       size="small"
                     />
                   </Box>
@@ -288,13 +289,21 @@ const Achievements = () => {
                   )}
 
                   {achievement.proof_document && (
-                    <Box mt={1}>
-                      <Chip
-                        icon={<AttachFileIcon />}
-                        label="Proof Attached"
-                        size="small"
+                    <Box mt={2}>
+                      <Button
                         variant="outlined"
-                      />
+                        size="small"
+                        startIcon={<AttachFileIcon />}
+                        href={achievement.proof_document}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        sx={{
+                          borderRadius: 2,
+                          textTransform: 'none'
+                        }}
+                      >
+                        View Proof Document
+                      </Button>
                     </Box>
                   )}
 
