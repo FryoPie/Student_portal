@@ -19,6 +19,7 @@ ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1,.onrender.com').
 
 
 INSTALLED_APPS = [
+    'django_extensions',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -68,11 +69,11 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('DB_NAME', 'student_portal_iuqc'),
-        'USER': os.getenv('DB_USER', 'portal_user'),
-        'PASSWORD': os.getenv('DB_PASSWORD', ''),
-        'HOST': os.getenv('DB_HOST', ''),
-        'PORT': os.getenv('DB_PORT', '5432'),
+        'NAME': 'student_portal',  # or whatever your DB is called
+        'USER': 'portal_user',
+        'PASSWORD': 'portal123',
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
 

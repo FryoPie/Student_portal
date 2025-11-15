@@ -1,8 +1,8 @@
 from django.urls import path
-from . import views
+from .views import CustomTokenObtainPairView, RegisterView, CurrentUserView
 
 urlpatterns = [
-    path('login/', views.custom_login, name='login'),
-    path('create-admin/', views.create_admin_user, name='create_admin'),
-    # Add other user-related URLs here
+    path('login/', CustomTokenObtainPairView.as_view(), name='login'),
+    path('register/', RegisterView.as_view(), name='register'),
+    path('me/', CurrentUserView.as_view(), name='current_user'),
 ]
