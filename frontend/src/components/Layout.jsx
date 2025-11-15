@@ -5,6 +5,7 @@ import NotificationsIcon from '@mui/icons-material/Notifications'
 import { useState, useEffect } from 'react'
 import api from '../services/api'
 import NotificationDrawer from './NotificationDrawer'
+import UIET_Logo from '../assets/images/UIET_logo.png';
 
 const Layout = ({ children }) => {
   const { user, logout, isAuthenticated } = useAuth()
@@ -39,37 +40,44 @@ const Layout = ({ children }) => {
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-      <AppBar position="static" elevation={3} sx={{ backgroundColor: '#0F2D52' }}>
-        <Toolbar sx={{ justifyContent: 'space-between', py: 1 }}>
-          <Box
-            component="img"
-            src="https://images.pexels.com/photos/267885/pexels-photo-267885.jpeg?auto=compress&cs=tinysrgb&w=120"
-            alt="Panjab University Logo"
-            sx={{ height: 60, mr: 2 }}
-          />
+      <AppBar position="static" elevation={3} 
+      sx={{ 
+        backgroundColor: '#0D47A1', // Better blue
+        background: 'linear-gradient(90deg, #0D47A1 0%, #42A5F5 100%)',
+      }}>
+        <Toolbar sx={{ py: 1 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', mr: 3 }}>
+            <Box
+              component="img"
+              src={UIET_Logo}
+              alt="UIET Logo"
+              sx={{ height: 50, mr: 2 }}
+            />
+            <Box>
+              <Typography
+                variant="h6"
+                component={Link}
+                to="/"
+                sx={{
+                  textDecoration: 'none',
+                  color: 'inherit',
+                  fontWeight: 700,
+                  lineHeight: 1.1
+                }}
+              >
+                UIET Student Achievement Portal
+              </Typography>
+              <Typography variant="caption" color="white" sx={{ opacity: 0.9, fontSize: '0.7rem', display: 'block' }}>
+                University Institute of Engineering and Technology
+              </Typography>
+              <Typography variant="caption" color="white" sx={{ opacity: 0.8, fontSize: '0.65rem', display: 'block' }}>
+                PANJAB UNIVERSITY, CHANDIGARH (U.T.) 160014
+              </Typography> 
+              
+            </Box>
+          </Box>
 
-          <Typography
-            variant="h6"
-            component={Link}
-            to="/"
-            sx={{
-              flexGrow: 1,
-              textDecoration: 'none',
-              color: 'inherit',
-              fontWeight: 700,
-              textAlign: 'center',
-              fontFamily: 'Georgia, serif',
-            }}
-          >
-            Student Achievement Portal
-          </Typography>
-
-          <Box
-            component="img"
-            src="https://images.pexels.com/photos/159775/library-la-trobe-study-students-159775.jpeg?auto=compress&cs=tinysrgb&w=120"
-            alt="UIET Logo"
-            sx={{ height: 60, mr: 2 }}
-          />
+          <Box sx={{ flexGrow: 1 }} />
 
           {isAuthenticated ? (
             <>
@@ -138,7 +146,7 @@ const Layout = ({ children }) => {
             Panjab University, Chandigarh
           </Typography>
           <Typography variant="caption" align="center" display="block" sx={{ mt: 2, opacity: 0.8 }}>
-            © 2024 UIET Student Achievement Portal. All rights reserved.
+            © 2025 UIET Student Achievement Portal. All rights reserved.
           </Typography>
         </Container>
       </Box>

@@ -42,11 +42,20 @@ const Register = () => {
 
     if (formData.password !== formData.confirmPassword) {
       setError('Passwords do not match')
+      setFormData(prev => ({
+        ...prev,
+        confirmPassword: ''
+      }))
       return
     }
 
     if (formData.password.length < 8) {
       setError('Password must be at least 8 characters long')
+      setFormData(prev => ({
+        ...prev,
+        password: '',
+        confirmPassword: ''
+      }))
       return
     }
 
