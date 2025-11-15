@@ -162,7 +162,7 @@ const Profile = () => {
             <Grid item xs={12}>
               <TextField
                 fullWidth
-                label="Student ID"
+                label="Roll_Number"
                 name="student_id"
                 value={profile?.student_id || ''}
                 onChange={handleChange}
@@ -186,18 +186,18 @@ const Profile = () => {
                 name="year"
                 value={profile?.year || ''}
                 onChange={handleChange}
-                placeholder="e.g., Sophomore, Junior"
+                placeholder="2026, 2027, 2028.."
               />
             </Grid>
 
             <Grid item xs={12} sm={6}>
               <TextField
                 fullWidth
-                label="GPA"
-                name="gpa"
+                label="CGPA"
+                name="cgpa"
                 type="number"
-                inputProps={{ step: 0.01, min: 0, max: 4 }}
-                value={profile?.gpa || ''}
+                inputProps={{ step: 0.1, min: 0, max: 10 }}
+                value={profile?.cgpa || ''}
                 onChange={handleChange}
               />
             </Grid>

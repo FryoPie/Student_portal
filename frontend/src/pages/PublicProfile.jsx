@@ -117,7 +117,7 @@ const PublicProfile = () => {
                   <Box display="flex" alignItems="center">
                     <SchoolIcon sx={{ mr: 1, color: 'primary.main' }} />
                     <Typography variant="body2">
-                      <strong>Student ID:</strong> {profile.student_id}
+                      <strong>Roll Number:</strong> {profile.student_id}
                     </Typography>
                   </Box>
                 </Grid>
@@ -142,7 +142,7 @@ const PublicProfile = () => {
               {profile.gpa && (
                 <Grid item xs={12} sm={6}>
                   <Typography variant="body2">
-                    <strong>GPA:</strong> {profile.gpa}
+                    <strong>CGPA:</strong> {profile.gpa}
                   </Typography>
                 </Grid>
               )}

@@ -14,7 +14,7 @@ class StudentProfileSerializer(serializers.ModelSerializer):
         fields = [
             'id', 'user', 'username', 'email', 'full_name',
             'profile_picture', 'bio', 'student_id', 'department',
-            'year', 'gpa', 'phone', 'linkedin_url', 'github_url',
+            'year', 'cgpa', 'phone', 'linkedin_url', 'github_url',
             'created_at', 'updated_at'
         ]
         read_only_fields = ['id', 'created_at', 'updated_at']
