@@ -4,14 +4,14 @@ from users.serializers import UserSerializer
 
 
 class AchievementSerializer(serializers.ModelSerializer):
-    student_name = serializers.CharField(source='student.username', read_only=True)
-    student_id = serializers.IntegerField(source='student.id', read_only=True)
-    verified_by_name = serializers.CharField(source='verified_by.username', read_only=True, allow_null=True)
+    student_name = serializers.CharField(source='student.student_id', read_only=True)
+    student_user_id = serializers.IntegerField(source='student.id', read_only=True)
+    verified_by_name = serializers.CharField(source='verified_by.student_id', read_only=True, allow_null=True)
 
     class Meta:
         model = Achievement
         fields = [
-            'id', 'student', 'student_name', 'student_id', 'title',
+            'id', 'student', 'student_name', 'student_user_id', 'title',
             'description', 'category', 'status', 'proof_document',
             'achievement_date', 'verified_by', 'verified_by_name',
             'verification_notes', 'created_at', 'updated_at'

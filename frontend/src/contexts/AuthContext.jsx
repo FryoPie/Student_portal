@@ -18,8 +18,8 @@ export const AuthProvider = ({ children }) => {
     setLoading(false)
   }, [])
 
-  const login = async (username, password) => {
-    const response = await api.post('/auth/login/', { username, password })
+  const login = async (student_id, password) => {
+    const response = await api.post('/auth/login/', { student_id, password })
     const { access, refresh, user: userData } = response.data
 
     localStorage.setItem('access_token', access)
@@ -34,7 +34,7 @@ export const AuthProvider = ({ children }) => {
 
   const register = async (userData) => {
     await api.post('/auth/register/', userData)
-    return login(userData.username, userData.password)
+    return login(userData.student_id, userData.password)
   }
 
   const logout = () => {

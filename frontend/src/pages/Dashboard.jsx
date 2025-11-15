@@ -47,7 +47,7 @@ const Dashboard = () => {
   return (
     <Box>
       <Typography variant="h4" gutterBottom fontWeight={600}>
-        Welcome, {user?.first_name || user?.username}!
+        Welcome, {user?.first_name || user?.student_id}!
       </Typography>
       <Typography variant="body1" color="text.secondary" paragraph>
         Here's an overview of your achievements

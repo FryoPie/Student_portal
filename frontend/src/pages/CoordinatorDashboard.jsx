@@ -158,7 +158,7 @@ const CoordinatorDashboard = () => {
                           <strong>Student:</strong>{' '}
                           <Link
                             component={RouterLink}
-                            to={`/profile/${achievement.student_id}`}
+                            to={`/profile/${achievement.student_user_id}`}
                           >
                             {achievement.student_name}
                           </Link>

@@ -97,7 +97,7 @@ const PublicProfile = () => {
               {profile.full_name}
             </Typography>
             <Typography variant="body1" color="text.secondary" sx={{ mt: 1 }}>
-              @{profile.username}
+              Roll No: {profile.student_id}
             </Typography>
           </Grid>
 

@@ -16,7 +16,7 @@ import { useAuth } from '../contexts/AuthContext'
 
 const Register = () => {
   const [formData, setFormData] = useState({
-    username: '',
+    student_id: '',
     email: '',
     password: '',
     confirmPassword: '',
@@ -125,13 +125,15 @@ const Register = () => {
 
           <TextField
             fullWidth
-            label="Username"
-            name="username"
-            value={formData.username}
+            label="Roll Number"
+            name="student_id"
+            value={formData.student_id}
             onChange={handleChange}
             margin="normal"
             required
             autoFocus
+            placeholder="Enter your roll number"
+            helperText="Your unique student roll number (e.g., 2024CS001)"
           />
 
           <TextField

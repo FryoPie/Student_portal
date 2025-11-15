@@ -14,7 +14,7 @@ import { useAuth } from '../contexts/AuthContext'
 
 const Login = () => {
   const [formData, setFormData] = useState({
-    username: '',
+    student_id: '',
     password: '',
   })
   const [error, setError] = useState('')
@@ -35,7 +35,7 @@ const Login = () => {
     setLoading(true)
 
     try {
-      const user = await login(formData.username, formData.password)
+      const user = await login(formData.student_id, formData.password)
 
       if (user.role === 'coordinator') {
         navigate('/coordinator')
@@ -43,7 +43,7 @@ const Login = () => {
         navigate('/dashboard')
       }
     } catch (err) {
-      setError(err.response?.data?.detail || 'Login failed. Please check your credentials.')
+      setError(err.response?.data?.detail || 'Login failed. Please check your roll number and password.')
     } finally {
       setLoading(false)
     }
@@ -68,13 +68,14 @@ const Login = () => {
         <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
           <TextField
             fullWidth
-            label="Username"
-            name="username"
-            value={formData.username}
+            label="Roll Number"
+            name="student_id"
+            value={formData.student_id}
             onChange={handleChange}
             margin="normal"
             required
             autoFocus
+            placeholder="Enter your roll number"
           />
           <TextField
             fullWidth

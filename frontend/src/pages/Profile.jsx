@@ -145,8 +145,8 @@ const Profile = () => {
             <Grid item xs={12} sm={6}>
               <TextField
                 fullWidth
-                label="Username"
-                value={user?.username || ''}
+                label="Roll Number"
+                value={user?.student_id || ''}
                 disabled
               />
             </Grid>
@@ -156,16 +156,6 @@ const Profile = () => {
                 label="Email"
                 value={user?.email || ''}
                 disabled
-              />
-            </Grid>
-
-            <Grid item xs={12}>
-              <TextField
-                fullWidth
-                label="Roll_Number"
-                name="student_id"
-                value={profile?.student_id || ''}
-                onChange={handleChange}
               />
             </Grid>
 

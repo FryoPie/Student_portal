@@ -10,12 +10,14 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['id', 'username', 'email', 'password', 'role', 'first_name', 'last_name']
-        read_only_fields = ['id']
+        fields = ['id', 'student_id', 'email', 'password', 'role', 'first_name', 'last_name', 'username']
+        read_only_fields = ['id', 'username']
 
     def create(self, validated_data):
+        student_id = validated_data['student_id']
         user = User.objects.create_user(
-            username=validated_data['username'],
+            username=student_id,
+            student_id=student_id,
             email=validated_data['email'],
             password=validated_data['password'],
             role=validated_data.get('role', 'student'),
@@ -26,18 +28,20 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+    username_field = 'student_id'
+
     @classmethod
     def get_token(cls, user):
         token = super().get_token(user)
         token['role'] = user.role
-        token['username'] = user.username
+        token['student_id'] = user.student_id
         return token
 
     def validate(self, attrs):
         data = super().validate(attrs)
         data['user'] = {
             'id': self.user.id,
-            'username': self.user.username,
+            'student_id': self.user.student_id,
             'email': self.user.email,
             'role': self.user.role,
             'first_name': self.user.first_name,
