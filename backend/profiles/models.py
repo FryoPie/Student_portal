@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+from django.core.validators import MinLengthValidator
 
 User = get_user_model()
 
@@ -11,7 +12,7 @@ class StudentProfile(models.Model):
     department = models.CharField(max_length=25, blank=True)
     year = models.CharField(max_length=4, blank=True)
     cgpa = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
-    phone = models.CharField(max_length=20, blank=True)
+    phone = models.CharField(max_length=10, blank=True, validators=[MinLengthValidator(10)] )
     linkedin_url = models.URLField(blank=True)
     github_url = models.URLField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)

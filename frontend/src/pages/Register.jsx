@@ -133,7 +133,7 @@ const Register = () => {
             required
             autoFocus
             placeholder="Enter your roll number"
-            helperText="Your unique student roll number (e.g., 2024CS001)"
+            helperText="Student roll number (e.g. UE220105, UEM223015..)"
           />
 
           <TextField

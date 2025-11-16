@@ -71,13 +71,29 @@ const Profile = () => {
         formData.append('profile_picture', selectedFile)
       }
 
-      Object.keys(profile).forEach(key => {
-        if (key !== 'profile_picture' && key !== 'user' && key !== 'id' && key !== 'created_at' && key !== 'updated_at' && key !== 'username' && key !== 'email' && key !== 'full_name') {
-          if (profile[key] !== null && profile[key] !== undefined) {
-            formData.append(key, profile[key])
-          }
+      // Define only the fields that should be sent to the API
+      const allowedFields = [
+        'department', 
+        'year', 
+        'cgpa', 
+        'phone', 
+        'bio', 
+        'linkedin_url', 
+        'github_url'
+      ]
+
+      // Only append allowed fields that exist and have values
+      allowedFields.forEach(field => {
+        if (profile[field] !== null && profile[field] !== undefined && profile[field] !== '') {
+          formData.append(field, profile[field])
         }
       })
+
+      // Debug: log what's being sent (remove this after testing)
+      console.log('Sending form data:')
+      for (let [key, value] of formData.entries()) {
+        console.log(key, value)
+      }
 
       await api.patch(`/profiles/${profile.id}/`, formData, {
         headers: {
@@ -86,9 +102,14 @@ const Profile = () => {
       })
 
       setSuccess('Profile updated successfully!')
-      fetchProfile()
+      setSelectedFile(null)
+      fetchProfile() 
     } catch (err) {
-      setError('Failed to update profile. Please try again.')
+      console.error('Profile update error:', err.response?.data)
+      const errorMessage = err.response?.data 
+        ? Object.entries(err.response.data).map(([key, value]) => `${key}: ${value}`).join(', ')
+        : 'Failed to update profile. Please try again.'
+      setError(errorMessage)
     } finally {
       setSaving(false)
     }
