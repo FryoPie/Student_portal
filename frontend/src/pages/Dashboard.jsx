@@ -19,7 +19,15 @@ const Dashboard = () => {
   const fetchStats = async () => {
     try {
       const response = await api.get('/achievements/list/my_achievements/')
-      const achievements = response.data
+      let achievements = response.data
+
+      if (!Array.isArray(achievements)) {
+        if (achievements && achievements.results && Array.isArray(achievements.results)) {
+          achievements = achievements.results
+        } else {
+          achievements = []
+        }
+      }
 
       const stats = {
         total: achievements.length,
@@ -31,6 +39,12 @@ const Dashboard = () => {
       setStats(stats)
     } catch (error) {
       console.error('Failed to fetch stats:', error)
+      setStats({
+        total: 0,
+        verified: 0,
+        pending: 0,
+        rejected: 0,
+      })
     } finally {
       setLoading(false)
     }

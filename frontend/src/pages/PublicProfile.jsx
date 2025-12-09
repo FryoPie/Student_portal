@@ -41,10 +41,20 @@ const PublicProfile = () => {
       ])
 
       setProfile(profileRes.data)
-      setAchievements(achievementsRes.data)
+
+      const achievementsData = achievementsRes.data
+      if (Array.isArray(achievementsData)) {
+        setAchievements(achievementsData)
+      } else if (achievementsData && achievementsData.results && Array.isArray(achievementsData.results)) {
+        setAchievements(achievementsData.results)
+      } else {
+        setAchievements([])
+      }
     } catch (error) {
       console.error('Failed to fetch profile:', error)
       setError('Failed to load profile')
+      setProfile(null)
+      setAchievements([])
     } finally {
       setLoading(false)
     }

@@ -59,9 +59,18 @@ const Achievements = () => {
   const fetchAchievements = async () => {
     try {
       const response = await api.get('/achievements/list/my_achievements/')
-      setAchievements(response.data)
+      let achievementsData = response.data
+
+      if (Array.isArray(achievementsData)) {
+        setAchievements(achievementsData)
+      } else if (achievementsData && achievementsData.results && Array.isArray(achievementsData.results)) {
+        setAchievements(achievementsData.results)
+      } else {
+        setAchievements([])
+      }
     } catch (error) {
       console.error('Failed to fetch achievements:', error)
+      setAchievements([])
     } finally {
       setLoading(false)
     }

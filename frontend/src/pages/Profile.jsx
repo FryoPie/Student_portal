@@ -10,15 +10,19 @@ import {
   Avatar,
   Grid,
   CircularProgress,
+  Divider,
 } from '@mui/material'
+import EditIcon from '@mui/icons-material/Edit'
 import { useAuth } from '../contexts/AuthContext'
 import api from '../services/api'
 
 const Profile = () => {
   const { user } = useAuth()
   const [profile, setProfile] = useState(null)
+  const [editedProfile, setEditedProfile] = useState(null)
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
+  const [editMode, setEditMode] = useState(false)
   const [success, setSuccess] = useState('')
   const [error, setError] = useState('')
   const [selectedFile, setSelectedFile] = useState(null)
@@ -32,6 +36,7 @@ const Profile = () => {
     try {
       const response = await api.get('/profiles/me/')
       setProfile(response.data)
+      setEditedProfile(response.data)
       if (response.data.profile_picture) {
         setPreviewUrl(response.data.profile_picture)
       }
@@ -43,9 +48,26 @@ const Profile = () => {
     }
   }
 
+  const handleEdit = () => {
+    setEditMode(true)
+    setEditedProfile({ ...profile })
+    setSelectedFile(null)
+    setError('')
+    setSuccess('')
+  }
+
+  const handleCancel = () => {
+    setEditMode(false)
+    setEditedProfile({ ...profile })
+    setSelectedFile(null)
+    setPreviewUrl(profile.profile_picture)
+    setError('')
+    setSuccess('')
+  }
+
   const handleChange = (e) => {
-    setProfile({
-      ...profile,
+    setEditedProfile({
+      ...editedProfile,
       [e.target.name]: e.target.value,
     })
   }
@@ -71,29 +93,21 @@ const Profile = () => {
         formData.append('profile_picture', selectedFile)
       }
 
-      // Define only the fields that should be sent to the API
       const allowedFields = [
-        'department', 
-        'year', 
-        'cgpa', 
-        'phone', 
-        'bio', 
-        'linkedin_url', 
+        'department',
+        'year',
+        'cgpa',
+        'phone',
+        'bio',
+        'linkedin_url',
         'github_url'
       ]
 
-      // Only append allowed fields that exist and have values
       allowedFields.forEach(field => {
-        if (profile[field] !== null && profile[field] !== undefined && profile[field] !== '') {
-          formData.append(field, profile[field])
+        if (editedProfile[field] !== null && editedProfile[field] !== undefined && editedProfile[field] !== '') {
+          formData.append(field, editedProfile[field])
         }
       })
-
-      // Debug: log what's being sent (remove this after testing)
-      console.log('Sending form data:')
-      for (let [key, value] of formData.entries()) {
-        console.log(key, value)
-      }
 
       await api.patch(`/profiles/${profile.id}/`, formData, {
         headers: {
@@ -102,11 +116,12 @@ const Profile = () => {
       })
 
       setSuccess('Profile updated successfully!')
+      setEditMode(false)
       setSelectedFile(null)
-      fetchProfile() 
+      await fetchProfile()
     } catch (err) {
       console.error('Profile update error:', err.response?.data)
-      const errorMessage = err.response?.data 
+      const errorMessage = err.response?.data
         ? Object.entries(err.response.data).map(([key, value]) => `${key}: ${value}`).join(', ')
         : 'Failed to update profile. Please try again.'
       setError(errorMessage)
@@ -126,11 +141,23 @@ const Profile = () => {
   return (
     <Container maxWidth="md">
       <Paper elevation={3} sx={{ p: 4 }}>
-        <Typography variant="h4" gutterBottom fontWeight={600}>
-          My Profile
-        </Typography>
+        <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
+          <Typography variant="h4" fontWeight={600}>
+            My Profile
+          </Typography>
+          {!editMode && (
+            <Button
+              variant="contained"
+              startIcon={<EditIcon />}
+              onClick={handleEdit}
+            >
+              Edit Profile
+            </Button>
+          )}
+        </Box>
+
         <Typography variant="body1" color="text.secondary" paragraph>
-          Update your profile information
+          {editMode ? 'Update your profile information' : 'View your profile information'}
         </Typography>
 
         {success && (
@@ -151,124 +178,228 @@ const Profile = () => {
               src={previewUrl}
               sx={{ width: 120, height: 120, mb: 2 }}
             />
-            <Button variant="outlined" component="label">
-              Upload Picture
-              <input
-                type="file"
-                hidden
-                accept="image/*"
-                onChange={handleFileChange}
-              />
-            </Button>
+            {editMode && (
+              <Button variant="outlined" component="label">
+                Upload Picture
+                <input
+                  type="file"
+                  hidden
+                  accept="image/*"
+                  onChange={handleFileChange}
+                />
+              </Button>
+            )}
           </Box>
 
-          <Grid container spacing={2}>
+          <Divider sx={{ mb: 3 }} />
+
+          <Grid container spacing={3}>
             <Grid item xs={12} sm={6}>
-              <TextField
-                fullWidth
-                label="Roll Number"
-                value={user?.student_id || ''}
-                disabled
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                fullWidth
-                label="Email"
-                value={user?.email || ''}
-                disabled
-              />
+              <Typography variant="caption" color="text.secondary" display="block" mb={0.5}>
+                Roll Number
+              </Typography>
+              <Typography variant="body1" fontWeight={500}>
+                {user?.student_id || 'N/A'}
+              </Typography>
             </Grid>
 
             <Grid item xs={12} sm={6}>
-              <TextField
-                fullWidth
-                label="Department"
-                name="department"
-                value={profile?.department || ''}
-                onChange={handleChange}
-              />
+              <Typography variant="caption" color="text.secondary" display="block" mb={0.5}>
+                Email
+              </Typography>
+              <Typography variant="body1" fontWeight={500}>
+                {user?.email || 'N/A'}
+              </Typography>
             </Grid>
 
             <Grid item xs={12} sm={6}>
-              <TextField
-                fullWidth
-                label="Year"
-                name="year"
-                value={profile?.year || ''}
-                onChange={handleChange}
-                placeholder="2026, 2027, 2028.."
-              />
+              {editMode ? (
+                <TextField
+                  fullWidth
+                  label="Department"
+                  name="department"
+                  value={editedProfile?.department || ''}
+                  onChange={handleChange}
+                />
+              ) : (
+                <>
+                  <Typography variant="caption" color="text.secondary" display="block" mb={0.5}>
+                    Department
+                  </Typography>
+                  <Typography variant="body1" fontWeight={500}>
+                    {profile?.department || 'Not specified'}
+                  </Typography>
+                </>
+              )}
             </Grid>
 
             <Grid item xs={12} sm={6}>
-              <TextField
-                fullWidth
-                label="CGPA"
-                name="cgpa"
-                type="number"
-                inputProps={{ step: 0.1, min: 0, max: 10 }}
-                value={profile?.cgpa || ''}
-                onChange={handleChange}
-              />
+              {editMode ? (
+                <TextField
+                  fullWidth
+                  label="Year"
+                  name="year"
+                  value={editedProfile?.year || ''}
+                  onChange={handleChange}
+                  placeholder="2026, 2027, 2028.."
+                />
+              ) : (
+                <>
+                  <Typography variant="caption" color="text.secondary" display="block" mb={0.5}>
+                    Year
+                  </Typography>
+                  <Typography variant="body1" fontWeight={500}>
+                    {profile?.year || 'Not specified'}
+                  </Typography>
+                </>
+              )}
             </Grid>
 
             <Grid item xs={12} sm={6}>
-              <TextField
-                fullWidth
-                label="Phone"
-                name="phone"
-                value={profile?.phone || ''}
-                onChange={handleChange}
-              />
+              {editMode ? (
+                <TextField
+                  fullWidth
+                  label="CGPA"
+                  name="cgpa"
+                  type="number"
+                  inputProps={{ step: 0.01, min: 0, max: 10 }}
+                  value={editedProfile?.cgpa || ''}
+                  onChange={handleChange}
+                />
+              ) : (
+                <>
+                  <Typography variant="caption" color="text.secondary" display="block" mb={0.5}>
+                    CGPA
+                  </Typography>
+                  <Typography variant="body1" fontWeight={500}>
+                    {profile?.cgpa || 'Not specified'}
+                  </Typography>
+                </>
+              )}
+            </Grid>
+
+            <Grid item xs={12} sm={6}>
+              {editMode ? (
+                <TextField
+                  fullWidth
+                  label="Phone"
+                  name="phone"
+                  value={editedProfile?.phone || ''}
+                  onChange={handleChange}
+                />
+              ) : (
+                <>
+                  <Typography variant="caption" color="text.secondary" display="block" mb={0.5}>
+                    Phone
+                  </Typography>
+                  <Typography variant="body1" fontWeight={500}>
+                    {profile?.phone || 'Not specified'}
+                  </Typography>
+                </>
+              )}
             </Grid>
 
             <Grid item xs={12}>
-              <TextField
-                fullWidth
-                label="Bio"
-                name="bio"
-                multiline
-                rows={4}
-                value={profile?.bio || ''}
-                onChange={handleChange}
-                placeholder="Tell us about yourself..."
-              />
+              {editMode ? (
+                <TextField
+                  fullWidth
+                  label="Bio"
+                  name="bio"
+                  multiline
+                  rows={4}
+                  value={editedProfile?.bio || ''}
+                  onChange={handleChange}
+                  placeholder="Tell us about yourself..."
+                />
+              ) : (
+                <>
+                  <Typography variant="caption" color="text.secondary" display="block" mb={0.5}>
+                    Bio
+                  </Typography>
+                  <Typography variant="body1" fontWeight={500}>
+                    {profile?.bio || 'No bio available'}
+                  </Typography>
+                </>
+              )}
             </Grid>
 
             <Grid item xs={12} sm={6}>
-              <TextField
-                fullWidth
-                label="LinkedIn URL"
-                name="linkedin_url"
-                value={profile?.linkedin_url || ''}
-                onChange={handleChange}
-                placeholder="https://linkedin.com/in/username"
-              />
+              {editMode ? (
+                <TextField
+                  fullWidth
+                  label="LinkedIn URL"
+                  name="linkedin_url"
+                  value={editedProfile?.linkedin_url || ''}
+                  onChange={handleChange}
+                  placeholder="https://linkedin.com/in/username"
+                />
+              ) : (
+                <>
+                  <Typography variant="caption" color="text.secondary" display="block" mb={0.5}>
+                    LinkedIn URL
+                  </Typography>
+                  <Typography variant="body1" fontWeight={500}>
+                    {profile?.linkedin_url ? (
+                      <a href={profile.linkedin_url} target="_blank" rel="noopener noreferrer">
+                        {profile.linkedin_url}
+                      </a>
+                    ) : (
+                      'Not specified'
+                    )}
+                  </Typography>
+                </>
+              )}
             </Grid>
 
             <Grid item xs={12} sm={6}>
-              <TextField
-                fullWidth
-                label="GitHub URL"
-                name="github_url"
-                value={profile?.github_url || ''}
-                onChange={handleChange}
-                placeholder="https://github.com/username"
-              />
+              {editMode ? (
+                <TextField
+                  fullWidth
+                  label="GitHub URL"
+                  name="github_url"
+                  value={editedProfile?.github_url || ''}
+                  onChange={handleChange}
+                  placeholder="https://github.com/username"
+                />
+              ) : (
+                <>
+                  <Typography variant="caption" color="text.secondary" display="block" mb={0.5}>
+                    GitHub URL
+                  </Typography>
+                  <Typography variant="body1" fontWeight={500}>
+                    {profile?.github_url ? (
+                      <a href={profile.github_url} target="_blank" rel="noopener noreferrer">
+                        {profile.github_url}
+                      </a>
+                    ) : (
+                      'Not specified'
+                    )}
+                  </Typography>
+                </>
+              )}
             </Grid>
           </Grid>
 
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            size="large"
-            sx={{ mt: 3 }}
-            disabled={saving}
-          >
-            {saving ? 'Saving...' : 'Save Changes'}
-          </Button>
+          {editMode && (
+            <Box display="flex" gap={2} mt={4}>
+              <Button
+                variant="outlined"
+                fullWidth
+                onClick={handleCancel}
+                disabled={saving}
+              >
+                Cancel
+              </Button>
+              <Button
+                type="submit"
+                variant="contained"
+                fullWidth
+                disabled={saving}
+              >
+                {saving ? 'Saving...' : 'Save Changes'}
+              </Button>
+            </Box>
+          )}
         </Box>
       </Paper>
     </Container>
